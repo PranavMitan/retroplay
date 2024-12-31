@@ -12,9 +12,10 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5000',
-    'http://localhost:5173', // Vite dev server
+    'http://localhost:5173',
     'https://youtube-shorts-player.onrender.com',
-    'https://youtube-shorts-api.onrender.com'
+    'https://youtube-shorts-api-3aqw.onrender.com',
+    '*'  // Temporarily allow all origins for testing
   ],
   credentials: true
 }));
