@@ -66,9 +66,9 @@ export async function fetchAndCacheVideos() {
       }
       console.log(`Saved videos for topic: ${topic}`);
     }
-  } catch (error) {
-    console.error('Error fetching videos:', error);
-    throw error;  // Re-throw to handle in the route
+  } catch (error: any) {
+    console.error('Error fetching videos:', error.response?.data || error.message);
+    throw error;
   }
 }
 
