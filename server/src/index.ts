@@ -9,7 +9,10 @@ import { videoRouter } from './routes/videos.js';
 dotenv.config();
 
 const app = express();
-app.use(cors());  // Allow all origins for now
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(express.json());
 
 // Add these headers to all responses
