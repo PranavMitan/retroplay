@@ -10,13 +10,17 @@ dotenv.config();
 
 const app = express();
 
-// Simple CORS setup
-app.use((_req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+// Full CORS configuration
+app.use(cors({
+  origin: ['https://youtube-shorts-player.onrender.com', 'http://localhost:5173'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Accept'],
+  credentials: false,
+  optionsSuccessStatus: 200
+}));
+
+// Pre-flight requests
+app.options('*', cors());
 
 app.use(express.json());
 

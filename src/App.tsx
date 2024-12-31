@@ -17,13 +17,13 @@ function App() {
     try {
       const response = await fetch(`${API_URL}/api/videos/random`, {
         method: 'GET',
-        mode: 'no-cors',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       });
       
-      if (response.type === 'opaque') {
+      if (!response.ok) {
         throw new Error('Failed to fetch video');
       }
 
