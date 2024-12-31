@@ -2,6 +2,7 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 import './App.css';
 import { AnimatedNextButton } from './components/AnimatedNextButton';
+import { AnimatedBackground } from './components/AnimatedBackground';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -48,6 +49,7 @@ function App() {
 
   return (
     <div className="App">
+      <AnimatedBackground />
       <div className="logo">WatchSomething Wonderful</div>
       <div className="share-container">
         <button 

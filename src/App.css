@@ -300,3 +300,57 @@ h1 {
   align-items: center;
   gap: 0.5rem;
 }
+
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.gradient-sphere {
+  position: absolute;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(255,225,93,0.2) 0%, rgba(0,0,0,0) 70%);
+  border-radius: 50%;
+  top: -25vw;
+  left: -25vw;
+  animation: float 20s ease-in-out infinite;
+}
+
+.gradient-sphere.second {
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(93,225,255,0.1) 0%, rgba(0,0,0,0) 70%);
+  top: 50vh;
+  left: 60vw;
+  animation-delay: -5s;
+}
+
+.gradient-sphere.third {
+  width: 45vw;
+  height: 45vw;
+  background: radial-gradient(circle, rgba(255,93,225,0.15) 0%, rgba(0,0,0,0) 70%);
+  top: 70vh;
+  left: 20vw;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(10%, 10%);
+  }
+  50% {
+    transform: translate(-5%, 5%);
+  }
+  75% {
+    transform: translate(5%, -10%);
+  }
+}
