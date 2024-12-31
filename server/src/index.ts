@@ -9,17 +9,16 @@ import { videoRouter } from './routes/videos.js';
 dotenv.config();
 
 const app = express();
-app.use(cors({
-  origin: [
-    'http://localhost:5000',
-    'http://localhost:5173',
-    'https://youtube-shorts-player.onrender.com',
-    'https://youtube-shorts-api-3aqw.onrender.com',
-    '*'  // Temporarily allow all origins for testing
-  ],
-  credentials: true
-}));
+app.use(cors());  // Allow all origins for now
 app.use(express.json());
+
+// Add these headers to all responses
+app.use((_req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 // Connect to MongoDB
 const connectDB = async () => {
