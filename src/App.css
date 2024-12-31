@@ -1,0 +1,268 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #000000;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100vw;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  text-align: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.video-wrapper {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.video-container {
+  width: 380px;
+  height: 600px;
+  background-color: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Force the player to maintain aspect ratio and stay within container */
+.video-container > div {
+  margin: 0 auto !important;
+  position: static !important;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 9/16 !important;
+  overflow: hidden !important;
+}
+
+/* Style the iframe to stay within bounds */
+.video-container iframe {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 20px !important;
+  transform: scale(1.01); /* Slight scale to prevent border radius gaps */
+}
+
+/* Hide YouTube player overflow */
+.video-container .react-player__preview {
+  overflow: hidden !important;
+  border-radius: 20px !important;
+}
+
+.logo {
+  position: absolute;
+  top: 1.5rem;
+  left: 2rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo::before {
+  content: "📺";
+  font-size: 1.5rem;
+}
+
+.share-button {
+  font-size: 1rem;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1.25rem;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  transition: all 0.2s;
+}
+
+.share-button.active {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  background: linear-gradient(to right, #fff 60%, #666);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.start-button, .next-button {
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.next-button::after {
+  content: "🎲";
+  font-size: 1.2rem;
+}
+
+.start-button:hover, .next-button:hover {
+  transform: translateY(-2px);
+  background-color: #f0f0f0;
+}
+
+.loading {
+  color: white;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.error {
+  color: #ff4444;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}
+
+.footer {
+  text-align: center;
+  padding: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.875rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .video-container {
+    width: 340px;
+    height: 540px;
+  }
+}
+
+.share-container {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+}
+
+.share-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: rgba(20, 20, 20, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 180px;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.share-option {
+  color: white;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.share-option img {
+  width: 20px;
+  height: 20px;
+}
+
+.share-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.landing-page {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.landing-page h1 {
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  color: white;
+}
+
+.landing-page h1:first-child {
+  color: white;
+}
+
+.landing-page h1:last-of-type {
+  margin-bottom: 2rem;
+}
+
+.highlight {
+  color: #FFE15D;
+}
+
+.start-button {
+  background: #FFE15D;
+  color: black;
+  padding: 1rem 2.5rem;
+  font-size: 1.2rem;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.start-button:hover {
+  transform: translateY(-2px);
+  background: #FFD700;
+}
+
+@media (max-width: 768px) {
+  .landing-page h1 {
+    font-size: 2.5rem;
+  }
+}
