@@ -84,8 +84,13 @@ function App() {
           <div className="landing-page">
             <h1>Skip the Scroll,</h1>
             <h1>Wonderful <span className="highlight">Shorts</span> on a Tap.</h1>
-            <button onClick={fetchRandomShort} className="start-button">
+            <button 
+              onClick={fetchRandomShort} 
+              className="start-button"
+              disabled={loading}
+            >
               Start Playing ▶
+              {loading && <div className="spinner" />}
             </button>
           </div>
         ) : (
@@ -103,12 +108,16 @@ function App() {
                 />
               </div>
             </div>
-            <button onClick={fetchRandomShort} className="next-button">
+            <button 
+              onClick={fetchRandomShort} 
+              className="next-button"
+              disabled={loading}
+            >
               Hit me with Another!
+              {loading && <div className="spinner" />}
             </button>
           </>
         )}
-        {loading && <div className="loading">Loading...</div>}
         {error && <div className="error">{error}</div>}
       </div>
       <div className="footer">A Team 7 Product</div>
