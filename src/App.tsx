@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
 import './App.css';
+import { AnimatedNextButton } from './components/AnimatedNextButton';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -84,14 +85,11 @@ function App() {
           <div className="landing-page">
             <h1>Skip the Scroll,</h1>
             <h1>Wonderful <span className="highlight">Shorts</span> on a Tap.</h1>
-            <button 
-              onClick={fetchRandomShort} 
-              className="start-button"
-              disabled={loading}
-            >
-              Start Playing ▶
-              {loading && <div className="spinner" />}
-            </button>
+            <AnimatedNextButton 
+              onClick={fetchRandomShort}
+              loading={loading}
+              text="Start Playing ▶"
+            />
           </div>
         ) : (
           // Video player page
@@ -108,14 +106,11 @@ function App() {
                 />
               </div>
             </div>
-            <button 
-              onClick={fetchRandomShort} 
-              className="next-button"
-              disabled={loading}
-            >
-              Hit me with Another!
-              {loading && <div className="spinner" />}
-            </button>
+            <AnimatedNextButton 
+              onClick={fetchRandomShort}
+              loading={loading}
+              text="Hit me with Another!"
+            />
           </>
         )}
         {error && <div className="error">{error}</div>}
