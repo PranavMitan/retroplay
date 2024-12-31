@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function AnimatedBackground() {
   return (
     <div className="animated-background">
