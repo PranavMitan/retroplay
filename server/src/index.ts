@@ -10,7 +10,13 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:5000', 'https://youtube-shorts-player.onrender.com']
+  origin: [
+    'http://localhost:5000',
+    'http://localhost:5173', // Vite dev server
+    'https://youtube-shorts-player.onrender.com',
+    'https://youtube-shorts-api.onrender.com'
+  ],
+  credentials: true
 }));
 app.use(express.json());
 
