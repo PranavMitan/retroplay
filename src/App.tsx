@@ -2,9 +2,7 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 import './App.css';
 
-const API_URL = import.meta.env.PROD
-  ? 'https://youtube-shorts-api-3aqw.onrender.com'
-  : 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 function App() {
   const [videoUrl, setVideoUrl] = React.useState<string | null>(null);
@@ -17,8 +15,15 @@ function App() {
     setError(null);
 
     try {
-      const response = await fetch(`${API_URL}/api/videos/random`);
-      if (!response.ok) {
+      const response = await fetch(`${API_URL}/api/videos/random`, {
+        method: 'GET',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.type === 'opaque') {
         throw new Error('Failed to fetch video');
       }
 
