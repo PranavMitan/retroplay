@@ -101,6 +101,7 @@ function App() {
             <AnimatedNextButton 
               onClick={fetchRandomShort}
               loading={loading}
+              isFirstClick={!videoUrl}
             />
           </div>
         ) : (
@@ -120,6 +121,7 @@ function App() {
             <AnimatedNextButton 
               onClick={fetchRandomShort}
               loading={loading}
+              isFirstClick={!videoUrl}
             />
           </>
         )}
