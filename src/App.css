@@ -86,16 +86,13 @@
   font-weight: 600;
   color: #fff;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 0.5rem;
   z-index: 2;
 }
 
 .logo::before {
-  content: "📺";
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  display: none;
 }
 
 .share-button {
@@ -141,8 +138,7 @@ h1 {
 }
 
 .next-button::after {
-  content: "🎲";
-  font-size: 1.2rem;
+  display: none;
 }
 
 .start-button:hover, .next-button:hover {

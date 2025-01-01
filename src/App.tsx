@@ -61,8 +61,7 @@ function App() {
         />
       </video>
       <div className="logo">
-        <span>WatchSomething</span>
-        <span>Wonderful.</span>
+        <span>Retro Play 🎵</span>
       </div>
       <div className="share-container">
         <button 
@@ -97,12 +96,12 @@ function App() {
       <div className="content">
         {!videoUrl ? (
           <div className="landing-page">
-            <h1>Skip the Scroll,</h1>
-            <h1>Wonderful <span className="highlight">Shorts</span> on a Tap.</h1>
+            <h1>Your Grandpa's</h1>
+            <h1>Playlist Could <span className="highlight">Never</span>.</h1>
             <AnimatedNextButton 
               onClick={fetchRandomShort}
               loading={loading}
-              text="Start Playing ▶"
+              text="Drop the beat ✨"
             />
           </div>
         ) : (
@@ -122,7 +121,7 @@ function App() {
             <AnimatedNextButton 
               onClick={fetchRandomShort}
               loading={loading}
-              text="Hit me with Another!"
+              text="Drop the beat ✨"
             />
           </>
         )}
