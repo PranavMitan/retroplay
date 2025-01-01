@@ -56,10 +56,7 @@ function App() {
         playsInline
       >
         <source 
-          // Choose one of these reliable video URLs:
-          src="https://assets.mixkit.co/videos/preview/mixkit-film-leader-countdown-timer-white-and-black-561-large.mp4"
-          // or this vintage film effect:
-          // src="https://assets.mixkit.co/videos/preview/mixkit-vintage-film-countdown-leader-white-and-black-557-large.mp4"
+          src="https://res.cloudinary.com/dldcpwyax/video/upload/v1735715983/new_vintage_jkoo6a.mp4"
           type="video/mp4"
         />
       </video>
