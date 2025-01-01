@@ -36,9 +36,9 @@ export async function fetchAndCacheVideos() {
           params: {
             part: 'snippet',
             maxResults: 50,
-            q: `${topic} shorts`,
+            q: `${topic} before:2010`,
             type: 'video',
-            videoDuration: 'short',
+            order: 'date',
             publishedBefore: '2011-01-01T00:00:00Z',
             key: process.env.YOUTUBE_API_KEY
           }
@@ -51,7 +51,7 @@ export async function fetchAndCacheVideos() {
         const description = item.snippet.description.toLowerCase();
         const publishDate = new Date(item.snippet.publishedAt);
         return (isEducational(title) || isEducational(description)) && 
-               publishDate.getFullYear() <= 2010;
+               publishDate <= new Date('2010-12-31T23:59:59Z');
       });
       console.log(`${videos.length} videos passed educational and date filter`);
 
