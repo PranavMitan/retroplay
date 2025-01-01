@@ -82,9 +82,7 @@ function App() {
       </div>
       <div className="content">
         {!videoUrl ? (
-          // Landing page
           <div className="landing-page">
-            <div className="film-background"></div>
             <h1>Skip the Scroll,</h1>
             <h1>Wonderful <span className="highlight">Shorts</span> on a Tap.</h1>
             <AnimatedNextButton 
@@ -94,7 +92,6 @@ function App() {
             />
           </div>
         ) : (
-          // Video player page
           <>
             <div className="video-wrapper">
               <div className="video-container">
