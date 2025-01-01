@@ -172,9 +172,12 @@ h1 {
   padding: 1rem;
   color: rgba(255, 255, 255, 0.5);
   font-size: 0.875rem;
-  margin-top: 2rem;
-  position: relative;
-  z-index: 1;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 100;
 }
 
 .footer a {
@@ -250,7 +253,9 @@ h1 {
   position: relative;
   z-index: 1;
   width: 100%;
-  padding: 0 20px;
+  padding: 0;
+  margin: 0 auto;
+  min-height: 100vh;
   box-sizing: border-box;
 }
 
@@ -289,6 +294,7 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin: 1rem auto;
 }
 
 .start-button:hover {
@@ -306,29 +312,24 @@ h1 {
   }
 
   .landing-page {
-    flex: 1;
-    padding: 4rem 20px 6rem;
-    margin: 0;
-    width: 100%;
-    box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+    padding: 4rem 0 6rem;
+    width: 100%;
   }
 
   .landing-page h1 {
     font-size: 2rem;
-    padding: 0;
+    padding: 0 1rem;
     text-align: center;
     width: 100%;
-    margin: 0 auto;
+    margin: 0;
   }
 
   .start-button {
     margin: 1rem auto;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
   }
 
   .footer {
