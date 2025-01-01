@@ -1,11 +1,14 @@
 import axios from 'axios';
 import { Video } from '../models/Video';
 import rateLimit from 'express-rate-limit';
+import { MonitoringService } from '../utils/monitoring';
 
 const API_KEY = process.env.YOUTUBE_API_KEY;
 const CACHE_DURATION = 24 * 60 * 60 * 1000;
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
+
+const monitoring = MonitoringService.getInstance();
 
 interface YouTubeResponse {
   items: Array<{
@@ -76,6 +79,9 @@ async function shouldRefreshCache(): Promise<boolean> {
 
 async function checkVideoAvailability(videoIds: string[]): Promise<string[]> {
   try {
+    // Cost: 1 unit per video ID, up to 50 IDs
+    monitoring.trackYouTubeAPICall(Math.ceil(videoIds.length / 50));
+    
     const response = await retryOperation(() => 
       Promise.resolve(axios.get<VideoDetailsResponse>(
         'https://www.googleapis.com/youtube/v3/videos',
@@ -118,6 +124,9 @@ export async function fetchAndCacheVideos() {
 
     console.log('Starting to fetch videos...');
 
+    // Cost: 100 units for search
+    monitoring.trackYouTubeAPICall(100);
+    
     const response = await retryOperation(() =>
       Promise.resolve(axios.get<YouTubeResponse>(
         `https://www.googleapis.com/youtube/v3/search`,
@@ -156,7 +165,6 @@ export async function fetchAndCacheVideos() {
       }));
 
     if (newVideos.length > 0) {
-      // Use a session to ensure atomic operation
       const session = await Video.startSession();
       try {
         await session.withTransaction(async () => {

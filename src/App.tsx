@@ -162,7 +162,7 @@ function App() {
       </div>
       {showToast && (
         <div className="toast">
-          <span className="material-icons">
+          <span className={`material-icons ${toastMessage.includes('copied') ? '' : 'error'}`}>
             {toastMessage.includes('copied') ? 'check_circle' : 'error'}
           </span>
           {toastMessage}
