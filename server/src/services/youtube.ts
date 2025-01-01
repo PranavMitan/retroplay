@@ -15,6 +15,23 @@ interface YouTubeResponse {
   }[];
 }
 
+interface VideoDetailsResponse {
+  items: {
+    id: string;
+    status: {
+      uploadStatus: string;
+      privacyStatus: string;
+      embeddable: boolean;
+    };
+    contentDetails: {
+      regionRestriction?: {
+        blocked?: string[];
+        allowed?: string[];
+      };
+    };
+  }[];
+}
+
 async function shouldRefreshCache(): Promise<boolean> {
   const lastVideo = await Video.findOne().sort({ createdAt: -1 });
   if (!lastVideo) return true;
@@ -23,10 +40,41 @@ async function shouldRefreshCache(): Promise<boolean> {
   return timeSinceLastUpdate > CACHE_DURATION;
 }
 
+async function checkVideoAvailability(videoIds: string[]): Promise<string[]> {
+  try {
+    const response = await axios.get<VideoDetailsResponse>(
+      'https://www.googleapis.com/youtube/v3/videos',
+      {
+        params: {
+          part: 'status,contentDetails',
+          id: videoIds.join(','),
+          key: process.env.YOUTUBE_API_KEY
+        }
+      }
+    );
+
+    return response.data.items
+      .filter(item => {
+        // Check if video is public, embeddable, and not region restricted
+        const isPublic = item.status.privacyStatus === 'public';
+        const isEmbeddable = item.status.embeddable;
+        const hasNoRestrictions = !item.contentDetails.regionRestriction;
+        const isAvailableGlobally = hasNoRestrictions || 
+          (!item.contentDetails.regionRestriction?.blocked?.length && 
+           !item.contentDetails.regionRestriction?.allowed?.length);
+
+        return isPublic && isEmbeddable && isAvailableGlobally;
+      })
+      .map(item => item.id);
+  } catch (error) {
+    console.error('Error checking video availability:', error);
+    return [];
+  }
+}
+
 export async function fetchAndCacheVideos() {
   console.log('Checking cache status...');
   
-  // Only refresh if cache is empty or old
   if (!(await shouldRefreshCache())) {
     console.log('Cache is still valid, skipping refresh');
     return;
@@ -56,20 +104,30 @@ export async function fetchAndCacheVideos() {
       return;
     }
 
-    // Don't clear old videos until we have new ones
-    const newVideos = response.data.items.map(item => ({
-      videoId: item.id.videoId,
-      title: item.snippet.title,
-      description: item.snippet.description,
-      publishedAt: new Date(item.snippet.publishedAt),
-      createdAt: new Date()
-    }));
+    // Get all video IDs
+    const videoIds = response.data.items.map(item => item.id.videoId);
+    
+    // Check availability for all videos
+    const availableVideoIds = await checkVideoAvailability(videoIds);
+    console.log(`Found ${availableVideoIds.length} available videos out of ${videoIds.length}`);
 
-    // Only clear old videos if we have new ones
+    // Filter and map only available videos
+    const newVideos = response.data.items
+      .filter(item => availableVideoIds.includes(item.id.videoId))
+      .map(item => ({
+        videoId: item.id.videoId,
+        title: item.snippet.title,
+        description: item.snippet.description,
+        publishedAt: new Date(item.snippet.publishedAt),
+        createdAt: new Date()
+      }));
+
     if (newVideos.length > 0) {
       await Video.deleteMany({});
       await Video.insertMany(newVideos);
-      console.log(`Cached ${newVideos.length} new videos`);
+      console.log(`Cached ${newVideos.length} available videos`);
+    } else {
+      console.log('No available videos found to cache');
     }
 
   } catch (error) {
@@ -78,7 +136,6 @@ export async function fetchAndCacheVideos() {
   }
 }
 
-// Initialize cache on server start
 export async function initializeVideoCache() {
   const count = await Video.countDocuments();
   if (count === 0 || await shouldRefreshCache()) {
