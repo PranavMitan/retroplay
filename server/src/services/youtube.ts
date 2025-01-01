@@ -9,6 +9,7 @@ interface YouTubeResponse {
     snippet: {
       title: string;
       description: string;
+      publishedAt: string;
     };
   }[];
 }
@@ -38,6 +39,7 @@ export async function fetchAndCacheVideos() {
             q: `${topic} shorts`,
             type: 'video',
             videoDuration: 'short',
+            publishedBefore: '2011-01-01T00:00:00Z',
             key: process.env.YOUTUBE_API_KEY
           }
         }
@@ -47,11 +49,13 @@ export async function fetchAndCacheVideos() {
       const videos = response.data.items.filter(item => {
         const title = item.snippet.title.toLowerCase();
         const description = item.snippet.description.toLowerCase();
-        return isEducational(title) || isEducational(description);
+        const publishDate = new Date(item.snippet.publishedAt);
+        return (isEducational(title) || isEducational(description)) && 
+               publishDate.getFullYear() <= 2010;
       });
-      console.log(`${videos.length} videos passed educational filter`);
+      console.log(`${videos.length} videos passed educational and date filter`);
 
-      // Save to database
+      // Save to database with publish date
       for (const video of videos) {
         await Video.findOneAndUpdate(
           { videoId: video.id.videoId },
@@ -59,7 +63,8 @@ export async function fetchAndCacheVideos() {
             videoId: video.id.videoId,
             title: video.snippet.title,
             description: video.snippet.description,
-            category: topic
+            category: topic,
+            publishedAt: video.snippet.publishedAt
           },
           { upsert: true }
         );

@@ -37,16 +37,17 @@
 }
 
 .video-container {
-  width: 380px;
-  height: 600px;
+  width: 800px;
+  height: 450px;
   background-color: #000;
-  border-radius: 20px;
+  border-radius: 12px;
   overflow: hidden;
   position: relative;
   margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* Force the player to maintain aspect ratio and stay within container */
@@ -55,7 +56,7 @@
   position: static !important;
   width: 100% !important;
   height: 100% !important;
-  aspect-ratio: 9/16 !important;
+  aspect-ratio: 16/9 !important;
   overflow: hidden !important;
 }
 
@@ -63,8 +64,7 @@
 .video-container iframe {
   width: 100% !important;
   height: 100% !important;
-  border-radius: 20px !important;
-  transform: scale(1.01); /* Slight scale to prevent border radius gaps */
+  border-radius: 12px !important;
 }
 
 /* Hide YouTube player overflow */
@@ -162,10 +162,10 @@ h1 {
   margin-top: 2rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 868px) {
   .video-container {
-    width: 340px;
-    height: 540px;
+    width: 90vw;
+    height: calc(90vw * 9/16);
   }
 }
 

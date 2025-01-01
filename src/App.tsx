@@ -30,7 +30,7 @@ function App() {
       }
 
       const video = await response.json();
-      setVideoUrl(`https://www.youtube.com/shorts/${video.videoId}`);
+      setVideoUrl(`https://www.youtube.com/watch?v=${video.videoId}`);
     } catch (err: any) {
       console.error('Fetch error:', err);
       setError(err.message || 'Error fetching educational short');

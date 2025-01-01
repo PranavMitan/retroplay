@@ -6,12 +6,15 @@ const videoSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  title: String,
+  title: {
+    type: String,
+    required: true
+  },
   description: String,
   category: String,
-  fetchedAt: {
+  publishedAt: {
     type: Date,
-    default: Date.now
+    required: true
   }
 });
 
