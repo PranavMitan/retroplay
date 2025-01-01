@@ -60,7 +60,10 @@ function App() {
           type="video/mp4"
         />
       </video>
-      <div className="logo">WatchSomething Wonderful</div>
+      <div className="logo">
+        <span>WatchSomething</span>
+        <span>Wonderful.</span>
+      </div>
       <div className="share-container">
         <button 
           className={`share-button ${showShareMenu ? 'active' : ''}`}
@@ -125,7 +128,7 @@ function App() {
         )}
         {error && <div className="error">{error}</div>}
       </div>
-      <div className="footer">A Team 7 Product</div>
+      <div className="footer">Built by Pranav Mitan</div>
     </div>
   );
 }
