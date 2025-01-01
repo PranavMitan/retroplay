@@ -48,6 +48,7 @@ function App() {
 
   return (
     <div className="App">
+      <div className="film-background"></div>
       <div className="logo">WatchSomething Wonderful</div>
       <div className="share-container">
         <button 
