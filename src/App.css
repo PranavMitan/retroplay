@@ -366,10 +366,14 @@ h1 {
     position: absolute;
     top: 1.5rem;
     left: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     display: flex;
     align-items: center;
     height: 40px;
+  }
+
+  .logo span {
+    font-size: 1.8rem;
   }
 
   .share-container {
@@ -385,6 +389,7 @@ h1 {
     height: 40px;
     display: flex;
     align-items: center;
+    font-size: 1rem;
   }
 
   .next-button {
