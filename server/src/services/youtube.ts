@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Video } from '../models/Video';
 
 const API_KEY = process.env.YOUTUBE_API_KEY;
+const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
 interface YouTubeResponse {
   items: {
@@ -14,28 +15,35 @@ interface YouTubeResponse {
   }[];
 }
 
-async function clearDatabase() {
-  console.log('Clearing database...');
-  await Video.deleteMany({});
-  console.log('Database cleared');
+async function shouldRefreshCache(): Promise<boolean> {
+  const lastVideo = await Video.findOne().sort({ createdAt: -1 });
+  if (!lastVideo) return true;
+  
+  const timeSinceLastUpdate = Date.now() - lastVideo.createdAt.getTime();
+  return timeSinceLastUpdate > CACHE_DURATION;
 }
 
 export async function fetchAndCacheVideos() {
-  await clearDatabase();
+  console.log('Checking cache status...');
+  
+  // Only refresh if cache is empty or old
+  if (!(await shouldRefreshCache())) {
+    console.log('Cache is still valid, skipping refresh');
+    return;
+  }
+
   console.log('Starting to fetch videos...');
 
   try {
-    console.log('Using API key:', process.env.YOUTUBE_API_KEY?.slice(0, 5) + '...');
-    
     const response = await axios.get<YouTubeResponse>(
       `https://www.googleapis.com/youtube/v3/search`,
       {
         params: {
           part: 'snippet',
           maxResults: 50,
-          q: 'music|song|concert|live performance',  // Music-focused query
+          q: 'music|song|concert|live performance',
           type: 'video',
-          videoCategoryId: '10',  // YouTube's category ID for Music
+          videoCategoryId: '10',
           videoDefinition: 'any',
           publishedBefore: '2011-01-01T00:00:00Z',
           key: process.env.YOUTUBE_API_KEY
@@ -43,48 +51,40 @@ export async function fetchAndCacheVideos() {
       }
     );
 
-    console.log('API Response:', {
-      totalResults: response.data.items?.length || 0,
-      firstVideo: response.data.items?.[0]?.snippet || 'No videos found'
-    });
-
-    // Add music-specific filter
-    const isMusicVideo = (title: string, description: string): boolean => {
-      const musicKeywords = ['music', 'song', 'concert', 'live', 'band', 'official', 'album'];
-      return musicKeywords.some(keyword => 
-        title.toLowerCase().includes(keyword) || 
-        description.toLowerCase().includes(keyword)
-      );
-    };
-
-    // Update the filter when saving
-    let savedCount = 0;
-    for (const video of response.data.items) {
-      const publishDate = new Date(video.snippet.publishedAt);
-      if (publishDate <= new Date('2010-12-31T23:59:59Z') && 
-          isMusicVideo(video.snippet.title, video.snippet.description)) {
-        await Video.findOneAndUpdate(
-          { videoId: video.id.videoId },
-          {
-            videoId: video.id.videoId,
-            title: video.snippet.title,
-            description: video.snippet.description,
-            category: 'music',
-            publishedAt: video.snippet.publishedAt
-          },
-          { upsert: true }
-        );
-        savedCount++;
-      }
+    if (!response.data.items?.length) {
+      console.log('No videos found in API response');
+      return;
     }
-    console.log(`Saved ${savedCount} videos to database`);
 
-  } catch (error: any) {
-    console.error('YouTube API Error:', {
-      message: error.message,
-      response: error.response?.data,
-      status: error.response?.status
-    });
+    // Don't clear old videos until we have new ones
+    const newVideos = response.data.items.map(item => ({
+      videoId: item.id.videoId,
+      title: item.snippet.title,
+      description: item.snippet.description,
+      publishedAt: new Date(item.snippet.publishedAt),
+      createdAt: new Date()
+    }));
+
+    // Only clear old videos if we have new ones
+    if (newVideos.length > 0) {
+      await Video.deleteMany({});
+      await Video.insertMany(newVideos);
+      console.log(`Cached ${newVideos.length} new videos`);
+    }
+
+  } catch (error) {
+    console.error('Error fetching videos:', error);
     throw error;
+  }
+}
+
+// Initialize cache on server start
+export async function initializeVideoCache() {
+  const count = await Video.countDocuments();
+  if (count === 0 || await shouldRefreshCache()) {
+    console.log('Initializing video cache...');
+    await fetchAndCacheVideos();
+  } else {
+    console.log('Video cache is already initialized');
   }
 } 
