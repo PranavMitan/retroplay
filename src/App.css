@@ -173,6 +173,8 @@ h1 {
   color: rgba(255, 255, 255, 0.5);
   font-size: 0.875rem;
   margin-top: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 868px) {
@@ -330,6 +332,11 @@ h1 {
 
   .next-button {
     margin-top: 1rem;
+  }
+
+  .footer {
+    margin-top: 3rem;
+    padding-bottom: 2rem;
   }
 }
 
