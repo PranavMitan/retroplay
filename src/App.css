@@ -369,3 +369,37 @@ h1 {
   object-fit: cover;
   opacity: 0.5;
 }
+
+.film-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    repeating-linear-gradient(
+      transparent 0,
+      rgba(0, 0, 0, 0.1) 2px,
+      transparent 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.1) 0,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px,
+      transparent 40px
+    );
+  animation: filmRoll 20s linear infinite;
+  opacity: 0.3;
+  z-index: -2;
+}
+
+@keyframes filmRoll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 100%;
+  }
+}

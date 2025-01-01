@@ -85,18 +85,7 @@ function App() {
         {!videoUrl ? (
           // Landing page
           <div className="landing-page">
-            <video 
-              className="background-video" 
-              autoPlay 
-              muted 
-              loop 
-              playsInline
-            >
-              <source 
-                src="https://static.videezy.com/system/resources/previews/000/041/516/original/vintage-film-reel-background.mp4"
-                type="video/mp4" 
-              />
-            </video>
+            <div className="film-background"></div>
             <h1>Skip the Scroll,</h1>
             <h1>Wonderful <span className="highlight">Shorts</span> on a Tap.</h1>
             <AnimatedNextButton 
