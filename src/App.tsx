@@ -48,7 +48,21 @@ function App() {
 
   return (
     <div className="App">
-      <div className="film-background"></div>
+      <video 
+        className="background-video"
+        autoPlay 
+        muted 
+        loop 
+        playsInline
+      >
+        <source 
+          // Choose one of these reliable video URLs:
+          src="https://assets.mixkit.co/videos/preview/mixkit-film-leader-countdown-timer-white-and-black-561-large.mp4"
+          // or this vintage film effect:
+          // src="https://assets.mixkit.co/videos/preview/mixkit-vintage-film-countdown-leader-white-and-black-557-large.mp4"
+          type="video/mp4"
+        />
+      </video>
       <div className="logo">WatchSomething Wonderful</div>
       <div className="share-container">
         <button 
