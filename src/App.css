@@ -376,21 +376,35 @@ h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #000;
-  background-image: 
-    linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(255,255,255,.1) 1px, transparent 1px),
-    linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.1));
-  background-size: 20px 20px, 20px 20px, cover;
-  animation: moveFilm 2s linear infinite;
+  background: #000;
   z-index: -1;
 }
 
-@keyframes moveFilm {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 20px 20px;
-  }
+.film-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    linear-gradient(rgba(50, 50, 50, 0.1) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(50, 50, 50, 0.1) 2px, transparent 2px);
+  background-size: 100% 100%, 50px 50px, 50px 50px;
+  animation: grain 1s steps(6) infinite;
+  opacity: 0.3;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -1%); }
+  20% { transform: translate(1%, 1%); }
+  30% { transform: translate(-2%, -2%); }
+  40% { transform: translate(2%, 2%); }
+  50% { transform: translate(-1%, 1%); }
+  60% { transform: translate(1%, -1%); }
+  70% { transform: translate(2%, -2%); }
+  80% { transform: translate(-2%, 2%); }
+  90% { transform: translate(1%, -1%); }
 }
