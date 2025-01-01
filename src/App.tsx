@@ -101,7 +101,7 @@ function App() {
             <AnimatedNextButton 
               onClick={fetchRandomShort}
               loading={loading}
-              text="Drop the beat ✨"
+              text={<>Drop the beat <span className="material-icons">auto_awesome</span></>}
             />
           </div>
         ) : (
@@ -121,7 +121,7 @@ function App() {
             <AnimatedNextButton 
               onClick={fetchRandomShort}
               loading={loading}
-              text="Drop the beat ✨"
+              text={<>Drop the beat <span className="material-icons">auto_awesome</span></>}
             />
           </>
         )}

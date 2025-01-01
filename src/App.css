@@ -89,10 +89,20 @@
   align-items: center;
   gap: 0.5rem;
   z-index: 2;
+  font-family: 'Sancreek', cursive;
 }
 
 .logo::before {
   display: none;
+}
+
+.logo span {
+  color: #fff;
+}
+
+/* Replace black music note with white variant */
+.logo span:last-child {
+  color: #fff;
 }
 
 .share-button {
@@ -123,7 +133,7 @@ h1 {
 }
 
 .start-button, .next-button {
-  padding: 0.875rem 2rem;
+  padding: 0.875rem 1.5rem;
   font-size: 1rem;
   background-color: #fff;
   color: #000;
@@ -135,6 +145,8 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  min-width: 200px;
+  justify-content: center;
 }
 
 .next-button::after {
@@ -230,10 +242,12 @@ h1 {
 
 .landing-page h1 {
   font-size: 4.5rem;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.1;
   margin: 0;
-  color: white;
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+  font-family: 'Sancreek', cursive;
 }
 
 .landing-page h1:first-child {
@@ -482,4 +496,10 @@ h1 {
   80% { transform: translate(-15%,0) }
   90% { transform: translate(10%,5%) }
   100% { transform: translate(5%,0) }
+}
+
+/* Replace emoji with Material Icon */
+.next-button .material-icons {
+  font-size: 1.2rem;
+  color: #000;
 }
