@@ -613,3 +613,14 @@ h1 {
 .share-option {
   cursor: pointer;
 }
+
+.share-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.25rem 0;
+}
+
+.share-option .material-icons {
+  color: white;  /* Make sure icons are visible */
+  font-size: 1.2rem;
+}
