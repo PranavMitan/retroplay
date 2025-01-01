@@ -218,6 +218,7 @@ h1 {
   align-items: center;
   gap: 0.75rem;
   font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .share-option img {
@@ -572,4 +573,43 @@ h1 {
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.3s ease-out;
+  z-index: 1000;
+}
+
+.toast .material-icons {
+  color: #4CAF50;
+  font-size: 1.2rem;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+/* Update share option hover */
+.share-option {
+  cursor: pointer;
 }

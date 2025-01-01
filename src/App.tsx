@@ -10,6 +10,7 @@ function App() {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [showShareMenu, setShowShareMenu] = React.useState(false);
+  const [showToast, setShowToast] = React.useState(false);
 
   const fetchRandomShort = async () => {
     setLoading(true);
@@ -60,6 +61,16 @@ function App() {
     }, 500);
   };
 
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
   return (
     <div className="App">
       <video 
@@ -86,6 +97,10 @@ function App() {
         </button>
         {showShareMenu && (
           <div className="share-menu">
+            <a className="share-option" onClick={handleCopyLink}>
+              <span className="material-icons">content_copy</span>
+              Copy Link
+            </a>
             <a className="share-option" onClick={() => handleShare('twitter')}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -142,6 +157,12 @@ function App() {
         {error && <div className="error">{error}</div>}
       </div>
       <div className="footer">Built by Pranav Mitan</div>
+      {showToast && (
+        <div className="toast">
+          <span className="material-icons">check_circle</span>
+          Copied to clipboard!
+        </div>
+      )}
     </div>
   );
 }
