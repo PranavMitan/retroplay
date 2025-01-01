@@ -11,8 +11,14 @@ const getRandomVideo: RequestHandler = async (_req, res, next): Promise<void> =>
     console.log(`Found ${count} videos in database`);
     
     if (count === 0) {
-      console.log('No videos in database, fetching new ones...');
+      console.log('Database empty, fetching new videos...');
       await fetchAndCacheVideos();
+      // Check again after fetching
+      const newCount = await Video.countDocuments();
+      if (newCount === 0) {
+        res.status(404).json({ message: 'No videos available' });
+        return;
+      }
     }
     
     const random = Math.floor(Math.random() * count);
