@@ -3,7 +3,6 @@ import ReactPlayer from 'react-player';
 import './App.css';
 import { AnimatedNextButton } from './components/AnimatedNextButton';
 import { AnimatedBackground } from './components/AnimatedBackground';
-import { IPhoneFrame } from './components/IPhoneFrame';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -98,18 +97,16 @@ function App() {
           // Video player page
           <>
             <div className="video-wrapper">
-              <IPhoneFrame>
-                <div className="video-container">
-                  <ReactPlayer
-                    url={videoUrl}
-                    width="100%"
-                    height="100%"
-                    playing={true}
-                    controls={true}
-                    style={{ display: 'block', margin: '0 auto' }}
-                  />
-                </div>
-              </IPhoneFrame>
+              <div className="video-container">
+                <ReactPlayer
+                  url={videoUrl}
+                  width="100%"
+                  height="100%"
+                  playing={true}
+                  controls={true}
+                  style={{ display: 'block', margin: '0 auto' }}
+                />
+              </div>
             </div>
             <AnimatedNextButton 
               onClick={fetchRandomShort}
