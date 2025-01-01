@@ -33,8 +33,9 @@ export async function fetchAndCacheVideos() {
         params: {
           part: 'snippet',
           maxResults: 50,
-          q: 'music',  // Simple query to test
+          q: 'music|song|concert|live performance',  // Music-focused query
           type: 'video',
+          videoCategoryId: '10',  // YouTube's category ID for Music
           videoDefinition: 'any',
           publishedBefore: '2011-01-01T00:00:00Z',
           key: process.env.YOUTUBE_API_KEY
@@ -47,18 +48,28 @@ export async function fetchAndCacheVideos() {
       firstVideo: response.data.items?.[0]?.snippet || 'No videos found'
     });
 
-    // Save all pre-2010 videos
+    // Add music-specific filter
+    const isMusicVideo = (title: string, description: string): boolean => {
+      const musicKeywords = ['music', 'song', 'concert', 'live', 'band', 'official', 'album'];
+      return musicKeywords.some(keyword => 
+        title.toLowerCase().includes(keyword) || 
+        description.toLowerCase().includes(keyword)
+      );
+    };
+
+    // Update the filter when saving
     let savedCount = 0;
     for (const video of response.data.items) {
       const publishDate = new Date(video.snippet.publishedAt);
-      if (publishDate <= new Date('2010-12-31T23:59:59Z')) {
+      if (publishDate <= new Date('2010-12-31T23:59:59Z') && 
+          isMusicVideo(video.snippet.title, video.snippet.description)) {
         await Video.findOneAndUpdate(
           { videoId: video.id.videoId },
           {
             videoId: video.id.videoId,
             title: video.snippet.title,
             description: video.snippet.description,
-            category: 'classic',
+            category: 'music',
             publishedAt: video.snippet.publishedAt
           },
           { upsert: true }
