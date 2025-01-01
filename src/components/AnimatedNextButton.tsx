@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface AnimatedNextButtonProps {
   onClick: () => void;
   loading: boolean;
