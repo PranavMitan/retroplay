@@ -157,7 +157,9 @@ function App() {
         )}
         {error && <div className="error">{error}</div>}
       </div>
-      <div className="footer">Built by Pranav Mitan</div>
+      <div className="footer">
+        Built by <a href="https://x.com/prnvtweets" target="_blank" rel="noopener noreferrer">Pranav Mitan</a>
+      </div>
       {showToast && (
         <div className="toast">
           <span className="material-icons">check_circle</span>

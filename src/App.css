@@ -177,6 +177,16 @@ h1 {
   z-index: 1;
 }
 
+.footer a {
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 868px) {
   .video-container {
     width: 90vw;
