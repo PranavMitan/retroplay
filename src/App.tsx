@@ -85,6 +85,18 @@ function App() {
         {!videoUrl ? (
           // Landing page
           <div className="landing-page">
+            <video 
+              className="background-video" 
+              autoPlay 
+              muted 
+              loop 
+              playsInline
+            >
+              <source 
+                src="https://player.vimeo.com/external/451775399.sd.mp4?s=726d1a1f29cd0921c7c544a28c5c2c6849e7f5d9&profile_id=164&oauth2_token_id=57447761" 
+                type="video/mp4" 
+              />
+            </video>
             <h1>Skip the Scroll,</h1>
             <h1>Wonderful <span className="highlight">Shorts</span> on a Tap.</h1>
             <AnimatedNextButton 
