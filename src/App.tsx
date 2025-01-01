@@ -2,19 +2,25 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 import './App.css';
 import { AnimatedNextButton } from './components/AnimatedNextButton';
+import { getErrorMessage } from './utils/errorMessages';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 function App() {
   const [videoUrl, setVideoUrl] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
   const [showShareMenu, setShowShareMenu] = React.useState(false);
   const [showToast, setShowToast] = React.useState(false);
+  const [toastMessage, setToastMessage] = React.useState('');
+
+  const showErrorToast = (message: string) => {
+    setToastMessage(message);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
 
   const fetchRandomShort = async () => {
     setLoading(true);
-    setError(null);
 
     try {
       const response = await fetch(`${API_URL}/api/videos/random`, {
@@ -33,7 +39,7 @@ function App() {
       setVideoUrl(`https://www.youtube.com/watch?v=${video.videoId}`);
     } catch (err: any) {
       console.error('Fetch error:', err);
-      setError(err.message || 'Error fetching educational short');
+      showErrorToast(getErrorMessage());
     } finally {
       setLoading(false);
     }
@@ -48,26 +54,30 @@ function App() {
   };
 
   const handleShare = (platform: string) => {
-    const url = shareLinks[platform as keyof typeof shareLinks];
-    
-    window.location.href = url;
-    
-    setTimeout(() => {
-      if (platform === 'instagram') {
-        window.open('https://www.instagram.com/share', '_blank');
-      } else if (platform === 'whatsapp') {
-        window.open(`https://web.whatsapp.com/send?text=${encodeURIComponent(`Check out these amazing retro music videos! ${shareUrl}`)}`, '_blank');
-      }
-    }, 500);
+    try {
+      const url = shareLinks[platform as keyof typeof shareLinks];
+      window.location.href = url;
+      
+      setTimeout(() => {
+        if (platform === 'instagram') {
+          window.open('https://www.instagram.com/share', '_blank');
+        } else if (platform === 'whatsapp') {
+          window.open(`https://web.whatsapp.com/send?text=${encodeURIComponent(`Check out these amazing retro music videos! ${shareUrl}`)}`, '_blank');
+        }
+      }, 500);
+    } catch (err) {
+      showErrorToast(getErrorMessage());
+    }
   };
 
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
+      setToastMessage('Link copied to clipboard! 📋');
       setShowToast(true);
       setTimeout(() => setShowToast(false), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      showErrorToast(getErrorMessage());
     }
   };
 
@@ -155,15 +165,16 @@ function App() {
             />
           </>
         )}
-        {error && <div className="error">{error}</div>}
       </div>
       <div className="footer">
         Built by <a href="https://x.com/prnvtweets" target="_blank" rel="noopener noreferrer">Pranav Mitan</a>
       </div>
       {showToast && (
         <div className="toast">
-          <span className="material-icons">check_circle</span>
-          Copied to clipboard!
+          <span className="material-icons">
+            {toastMessage.includes('copied') ? 'check_circle' : 'error'}
+          </span>
+          {toastMessage}
         </div>
       )}
     </div>
