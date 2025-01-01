@@ -126,10 +126,7 @@ h1 {
   font-weight: 700;
   line-height: 1.1;
   margin: 0;
-  background: linear-gradient(to right, #fff 60%, #666);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #fff;
 }
 
 .start-button, .next-button {
@@ -235,7 +232,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
   position: relative;
   z-index: 1;
 }
@@ -244,14 +241,10 @@ h1 {
   font-family: 'DM Serif Text', serif;
   font-size: 4.5rem;
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1;
   margin: 0;
   color: #fff;
   padding: 0.1em 0;
-  background: none;
-  -webkit-text-fill-color: initial;
-  -webkit-background-clip: initial;
-  background-clip: initial;
 }
 
 .landing-page h1:first-child {
@@ -263,7 +256,7 @@ h1 {
 }
 
 .highlight {
-  color: #FFE15D;
+  color: #fff;
 }
 
 .start-button {
@@ -400,10 +393,32 @@ h1 {
 }
 
 .next-button {
-  padding: 0.875rem 2rem;
+  padding: 0.875rem 1.5rem;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  font-size: 1rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
+}
+
+.material-icons {
+  font-size: 1.2rem;
+  color: #000;
+}
+
+.loading-sparkle {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .animated-background {
@@ -505,4 +520,49 @@ h1 {
   font-size: 1.2rem;
   color: #000;
   margin: 0;
+}
+
+/* Sparkle loading animation */
+.loading-sparkle {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Update button styles */
+.next-button {
+  padding: 0.875rem 1.5rem;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;  /* Consistent spacing */
+}
+
+.next-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+/* Spinning animation for loader */
+.next-button:disabled .material-icons {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
