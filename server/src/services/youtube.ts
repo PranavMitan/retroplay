@@ -117,13 +117,15 @@ export async function fetchAndCacheVideos() {
   console.log('Checking cache status...');
   
   try {
-    if (!(await shouldRefreshCache())) {
+    // Check if we have enough videos in cache
+    const videoCount = await Video.countDocuments();
+    if (videoCount >= 10 && !(await shouldRefreshCache())) {
       console.log('Cache is still valid, skipping refresh');
       return;
     }
 
     console.log('Starting to fetch videos...');
-
+    
     // Cost: 100 units for search
     monitoring.trackYouTubeAPICall(100);
     
@@ -165,10 +167,22 @@ export async function fetchAndCacheVideos() {
       }));
 
     if (newVideos.length > 0) {
+      // Instead of clearing all videos, keep a buffer and remove older ones
       const session = await Video.startSession();
       try {
         await session.withTransaction(async () => {
-          await Video.deleteMany({}, { session });
+          // Keep the most recent videos up to a limit
+          const videosToKeep = await Video.find()
+            .sort({ createdAt: -1 })
+            .limit(10)
+            .select('_id');
+          
+          // Remove videos not in the keep list
+          await Video.deleteMany({
+            _id: { $nin: videosToKeep.map(v => v._id) }
+          }, { session });
+          
+          // Insert new videos
           await Video.insertMany(newVideos, { session });
         });
         console.log(`Cached ${newVideos.length} available videos`);
@@ -190,10 +204,17 @@ export async function fetchAndCacheVideos() {
 
 export async function initializeVideoCache() {
   try {
+    // Check if we need to initialize
     const count = await Video.countDocuments();
-    if (count === 0 || await shouldRefreshCache()) {
+    if (count === 0) {
       console.log('Initializing video cache...');
       await fetchAndCacheVideos();
+    } else if (await shouldRefreshCache()) {
+      // Refresh in background if cache is stale
+      console.log('Refreshing cache in background...');
+      fetchAndCacheVideos().catch(err => 
+        console.error('Background cache refresh failed:', err)
+      );
     } else {
       console.log('Video cache is already initialized');
     }
